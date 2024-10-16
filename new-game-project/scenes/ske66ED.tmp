@@ -1,0 +1,46 @@
+[gd_scene load_steps=9 format=3 uid="uid://cw6eif1qq42w3"]
+
+[ext_resource type="Script" path="res://scripts/enemeyAI.gd" id="1_6trvi"]
+[ext_resource type="Texture2D" uid="uid://cid2f1l0f78xj" path="res://assets/NPCs/Enemy/Skele-Prototyp-Idle-Frame-1.png" id="1_ar3n7"]
+[ext_resource type="Script" path="res://scripts/aiStateMachine.gd" id="3_2ydqt"]
+[ext_resource type="Script" path="res://scripts/wanderGround.gd" id="4_ndk64"]
+[ext_resource type="Script" path="res://scripts/enemeyIdle.gd" id="4_t0ex3"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hdqff"]
+atlas = ExtResource("1_ar3n7")
+region = Rect2(0, 0, 16, 38)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_hvkuh"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hdqff")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f6upd"]
+size = Vector2(14, 37)
+
+[node name="Skeleton" type="CharacterBody2D"]
+script = ExtResource("1_6trvi")
+speed = 10.0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_hvkuh")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_f6upd")
+
+[node name="StateMachine" type="Node2D" parent="." node_paths=PackedStringArray("initialState")]
+script = ExtResource("3_2ydqt")
+initialState = NodePath("Idle")
+
+[node name="Idle" type="Node2D" parent="StateMachine"]
+script = ExtResource("4_t0ex3")
+
+[node name="wanderGround" type="Node2D" parent="StateMachine"]
+script = ExtResource("4_ndk64")
